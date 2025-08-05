@@ -11,9 +11,9 @@ class drive_information:
     def __init__(self):
         #drives will contain all the volumes available to the user
         drives = psutil.disk_partitions(all=True)
-        results, secs = self.scan_drives(drives) 
-        print(results)
-        print(f"total time taken: {secs / 60:.2f}")
+        self.results, self.secs = self.scan_drives(drives) 
+        print(self.results)
+        print(f"total time taken: {self.secs / 60:.2f}")
     r"""
         function adds all root drives (C:\\, G:\\, etc) to the queue of folders to be searched
 

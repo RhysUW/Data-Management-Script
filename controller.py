@@ -1,4 +1,6 @@
-import Drive_Information
+import Drive_Information as di
 
-drive_sums = Drive_Information.drive_information()
-print(drive_sums)
+drive_sums = di.drive_information()
+
+print(f"from controller: {drive_sums.results}")
+print(f"from controller: {drive_sums.secs}")

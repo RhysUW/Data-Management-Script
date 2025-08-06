@@ -1,4 +1,3 @@
-test.py
-alpha.py
-beta.py
-"test files"
+__pycache__
+ignore.py
+Report - *.csv

@@ -1,7 +1,6 @@
 import os, time, stat, threading, psutil
-from collections import deque
 from queue import Queue, Empty
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 
 
 #function to convert bytes to gigbytes
@@ -34,6 +33,9 @@ class drive_information:
             q (queue): queue of tuples that contains the root drive (always) and a path to a specific folder in that root drive
             lock(Lock): lock for the threads to ensure mutual exclusion
             results(dictionary): root_drive_path: total # of bytes allocated in drive   
+
+        Returns: 
+            function increments the results[key] entry by the sum of all files in a given folder
     """
     def walk_size(self, queue, lock, results):
         errors = 0
@@ -68,6 +70,14 @@ class drive_information:
                 
     """
     function initializes the working queue and the results 
+
+    Args:
+        drives (psutil disk partition list): list of information on all drives the user has access to.
+        max_workers (int): maximum number of threads the program will create.
+
+    returns:
+        results (dictionary): each entry is a drive user has acess to and its associated value is the sum of all files in that drive, in GB's
+        elapsed (float): total time in seconds the algorithm has been running
     """
     def scan_drives(self, drives, max_workers=64):
         #queue of tuples where the tuple contains the root drive(G:\\, C:\\, etc) and the folder in that root to be searched

@@ -12,9 +12,10 @@ class csv_handler:
     Returns:
         outputs a .csv file with all information printed to it.
     """
-    def __init__(self, drive_info):
-        self.input = drive_info
+    def __init__(self, drive_info, input_data):
+        self.input = drive_info.results
         self.output = [["Drive", "Size", '']]
+        self.input_data = input_data
         current_dir = os.getcwd()
         current_date = datetime.date.today()
         self.report_csv = os.path.join(current_dir, f"Report - {current_date}.csv")
@@ -32,10 +33,13 @@ class csv_handler:
     """
     def convert_dict(self):
         for entry in self.input:
-            dtype = win32file.GetDriveType(entry)
-            if dtype == win32con.DRIVE_REMOTE:
-                net_drive = entry.rstrip("\\")
-                self.output.append([win32wnet.WNetGetConnection(net_drive), f"{self.input[entry]:.2f}"])
+            if self.input_data.auto_scan is True:
+                dtype = win32file.GetDriveType(entry)
+                if dtype == win32con.DRIVE_REMOTE:
+                    net_drive = entry.rstrip("\\")
+                    self.output.append([win32wnet.WNetGetConnection(net_drive), f"{self.input[entry]:.2f}"])
+            else:
+                self.output.append([entry, f"{self.input[entry]:.2f}"])
 
     """
     
